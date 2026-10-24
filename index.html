@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     Романтический сайт-сюрприз для Самиры
+     Страница 1: «У меня есть кое-что для тебя» + кнопка «Нажми сюда»
+     Страница 2: «Самира, я тебя люблю» + сердечки + анимированный фон
+     Всё в одном файле, чтобы легко залить на GitHub Pages
+     ============================================================ -->
+<html lang="ru">
+<head>
+    <!-- Кодировка UTF-8 — чтобы русские буквы отображались правильно -->
+    <meta charset="UTF-8">
+
+    <!-- Адаптация под телефон: масштаб по ширине экрана устройства -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Заголовок вкладки в браузере -->
+    <title>Для тебя 💝</title>
+
+    <style>
+        /* ---------- ОБЩИЕ СТИЛИ ---------- */
+
+        /* Убираем стандартные отступы браузера и запрещаем прокрутку */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;               /* не прокручивается */
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* ---------- АНИМИРОВАННЫЙ ФОН (плавно меняющиеся цвета) ---------- */
+
+        body {
+            /* Градиент из 3 цветов, которые плавно перетекают друг в друга */
+            background: linear-gradient(-45deg, #ff6b9d, #c44569, #6c5ce7, #fd79a8);
+            background-size: 400% 400%;      /* больше фона = красивее движение */
+            animation: gradientMove 12s ease infinite;  /* анимация 12 секунд, бесконечно */
+        }
+
+        @keyframes gradientMove {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ---------- «СТРАНИЦЫ» (экраны) ---------- */
+
+        /* Каждый экран занимает всё окно и центрирует содержимое */
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: flex;                   /* включаем флекс-контейнер */
+            flex-direction: column;          /* элементы друг под другом */
+            justify-content: center;         /* по центру вертикально */
+            align-items: center;             /* по центру горизонтально */
+            text-align: center;
+            padding: 20px;
+            /* ВАЖНО: оба экрана «приклеены» к одному и тому же месту и
+               лежат друг на друге, как стопка листов бумаги.
+               Иначе второй экран оказался бы ПОД первым, за краем окна */
+            position: fixed;                 /* фиксируем относительно окна браузера */
+            top: 0;                          /* самый верх */
+            left: 0;                         /* самый левый край */
+            z-index: 2;                      /* текст выше сердечек */
+        }
+
+        /* Второй экран изначально скрыт (прозрачен и недоступен).
+           Позицию не трогаем — он уже лежит поверх первого экрана */
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Плавное появление экрана (эффект затухания) */
+        .screen {
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+        }
+
+        /* ---------- СТРАНИЦА 1 ---------- */
+
+        .text1 {
+            font-size: clamp(28px, 8vw, 56px);   /* размер подстраивается под экран */
+            color: #fff;
+            font-weight: 700;
+            /* Мягкое свечение вокруг текста */
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+            /* Плавная пульсация размера */
+            animation: pulseText 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.05); }
+        }
+
+        /* Кнопка «Нажми сюда» */
+        .button {
+            padding: 18px 48px;
+            font-size: clamp(18px, 4.5vw, 24px);
+            font-weight: 600;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);   /* полупрозрачная */
+            border: 2px solid #fff;                  /* белая рамка */
+            border-radius: 50px;                     /* делает кнопку овальной */
+            cursor: pointer;                         /* курсор-рука при наведении */
+            transition: all 0.3s ease;
+            /* Пульсация кнопки, чтобы привлечь внимание */
+            animation: pulseButton 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulseButton {
+            0%, 100% { transform: scale(1);   box-shadow: 0 0 0 rgba(255,255,255,0.4); }
+            50%      { transform: scale(1.08); box-shadow: 0 0 30px rgba(255,255,255,0.6); }
+        }
+
+        /* Эффект при наведении мышкой (на компьютере) */
+        .button:hover {
+            background: #fff;
+            color: #c44569;
+        }
+
+        /* ---------- СТРАНИЦА 2 ---------- */
+
+        .text2 {
+            font-size: clamp(32px, 9vw, 72px);
+            color: #fff;
+            font-weight: 800;
+            line-height: 1.3;
+            /* Свечение розовым — как неон */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
+                         0 0 40px rgba(255, 107, 157, 0.9),
+                         0 0 70px rgba(255, 107, 157, 0.5);
+            animation: pulseText 2s ease-in-out infinite;  /* та же пульсация */
+        }
+
+        .heart-emoji {
+            font-size: clamp(50px, 15vw, 100px);
+            margin-bottom: 20px;
+            /* Сердечко «бьётся» — быстрое увеличение-уменьшение */
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25%      { transform: scale(1.2); }
+            40%      { transform: scale(0.95); }
+            60%      { transform: scale(1.15); }
+        }
+
+        /* ---------- ЛЕТАЮЩИЕ СЕРДЕЧКИ НА ФОНЕ ---------- */
+
+        .heart {
+            position: fixed;         /* позиция считается от окна браузера */
+            bottom: -60px;           /* начинаются за нижним краем экрана */
+            z-index: 1;              /* под текстом, но над фоном */
+            font-size: 26px;
+            opacity: 0.8;
+            pointer-events: none;    /* сердечки не мешают нажимать кнопку */
+            /* Запускаем анимацию полёта */
+            animation: flyUp linear infinite;
+        }
+
+        /* Анимация полёта сердца снизу вверх */
+        @keyframes flyUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                /* -110vh = пролёт за верхний край экрана */
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- СТРАНИЦА 1: приглашение -->
+    <div class="screen" id="screen1">
+        <h1 class="text1">У меня есть кое-что для тебя...</h1>
+        <!-- При нажатии запускается функция showLove() -->
+        <button class="button" onclick="showLove()">Нажми сюда 💕</button>
+    </div>
+
+    <!-- СТРАНИЦА 2: признание (изначально скрыта) -->
+    <div class="screen hidden" id="screen2">
+        <div class="heart-emoji">❤️</div>
+        <h1 class="text2">Самира,<br>я тебя люблю</h1>
+    </div>
+
+    <script>
+        /* ============================================================
+           ЧАСТЬ 1: Переключение страниц
+           ============================================================ */
+
+        function showLove() {
+            // Находим оба экрана по их id
+            var screen1 = document.getElementById('screen1');
+            var screen2 = document.getElementById('screen2');
+
+            // Прячем первый экран (он плавно исчезнет из-за transition)
+            screen1.style.opacity = '0';
+            screen1.style.visibility = 'hidden';
+
+            // Показываем второй экран
+            screen2.classList.remove('hidden');
+            screen2.style.opacity = '1';
+
+            // Запускаем много сердечек (эффект «дождь из сердец»)
+            setInterval(createHeart, 300);   // новое сердечко каждые 0.3 сек
+        }
+
+        /* ============================================================
+           ЧАСТЬ 2: Создание летающих сердечек
+           ============================================================ */
+
+        function createHeart() {
+            // Создаём новый элемент <div> в памяти страницы
+            var heart = document.createElement('div');
+
+            // Даём ему класс .heart (к нему применятся стили и анимация)
+            heart.className = 'heart';
+
+            // Случайно выбираем один из видов сердечка
+            var symbols = ['❤️', '💖', '💕', '🩷', '💗'];
+            heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+            // Случайное горизонтальное положение: от 0% до 100% ширины экрана
+            heart.style.left = Math.random() * 100 + '%';
+
+            // Случайный размер сердечка: от 16 до 40 пикселей
+            heart.style.fontSize = (16 + Math.random() * 24) + 'px';
+
+            // Случайная длительность полёта: от 5 до 10 секунд
+            // И присваиваем её прямо в стиль анимации
+            var duration = 5 + Math.random() * 5;
+            heart.style.animationDuration = duration + 's';
+
+            // Добавляем сердечко на страницу — оно сразу начинает лететь
+            document.body.appendChild(heart);
+
+            // Через 10 секунд удаляем сердечко, чтобы страница не засорялась
+            setTimeout(function () {
+                heart.remove();
+            }, 10000);
+        }
+
+        /* Несколько сердечек сразу при загрузке страницы,
+           чтобы на первом экране уже было красиво */
+        for (var i = 0; i < 5; i++) {
+            createHeart();
+        }
+    </script>
+</body>
+</html>
